@@ -16,7 +16,7 @@ public class AddressBookDB {
 	private static Connection connection = null;
 	
 	/**
-	 * UC1
+	 * UC16
 	 * @return
 	 * @throws DBCustomException
 	 */
@@ -35,7 +35,7 @@ public class AddressBookDB {
 	
 
 	/**
-	 * UC1
+	 * UC16
 	 * @return
 	 * @throws DBCustomException
 	 */
