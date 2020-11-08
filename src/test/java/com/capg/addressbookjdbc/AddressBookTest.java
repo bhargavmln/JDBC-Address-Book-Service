@@ -49,4 +49,15 @@ public class AddressBookTest {
     	Map<String, Integer> noOfContacts = AddressBookDB.viewCountByCityOrState("city");
     	Assert.assertEquals(2, noOfContacts.get("Hyderabad"),0);
     }
+    
+    //UC20
+    @Ignore
+    @Test
+	public void addedNewContact_whenContactsCounted_shouldGiveCurrentCountOfContacts() throws DBCustomException {
+    	String[] book_id = { "AB002", "AB003" };
+    	AddressBookDB.insertContactInformation("Lakshmi", "Ganesh", "524524524", "klg@gmail.com", "Plot", "Vizag", "AP", "542111",
+				"ADD102", book_id, "2019-12-12");
+    	List<Contact> contactList = AddressBookDB.viewAddressBook();
+		Assert.assertEquals(6, contactList.size());
+	}
 }

@@ -235,4 +235,72 @@ public class AddressBookDB {
 		}
 		return noOfContacts;
 	}
+	
+	/**
+	 * UC20
+	 * 
+	 * @param first_name
+	 * @param last_name
+	 * @param phone
+	 * @param email
+	 * @param address
+	 * @param city
+	 * @param state
+	 * @param pin
+	 * @param add_id
+	 * @param book_id
+	 * @param start_date
+	 * @throws DBCustomException
+	 */
+	public static void insertContactInformation(String first_name, String last_name, String phone, String email,
+			String address, String city, String state, String pin, String add_id, String[] book_id, String start_date)
+			throws DBCustomException {
+		String personDetails = String.format(
+				"insert into person_details(first_name,last_name, phone, email, start_date, add_id) values('%s','%s','%s','%s','%s','%s')",
+				first_name, last_name, phone, email, start_date, add_id);
+		String query = String.format("SELECT add_id FROM address_details WHERE `add_id` = '%s'", add_id);
+		String addAddress = "INSERT INTO address_details VALUES(?,?,?,?,?)";
+		try (Connection connection = getConnection()) {
+			connection.setAutoCommit(false);
+			int rowsUpdated = 0;
+			int id = -1;
+			Statement statement = connection.createStatement();
+			rowsUpdated = statement.executeUpdate(personDetails, Statement.RETURN_GENERATED_KEYS);
+			ResultSet resultSetID = null;
+			if (rowsUpdated == 1) {
+				resultSetID = statement.getGeneratedKeys();
+				if (resultSetID.next())
+					id = resultSetID.getInt(1);
+			} else {
+				throw new DBCustomException("Unable to add person details");
+			}
+			Statement addID = connection.createStatement();
+			ResultSet resultSet = addID.executeQuery(query);
+			if (!resultSet.next()) {
+				PreparedStatement preparedStatement = connection.prepareStatement(addAddress);
+				preparedStatement.setString(1, add_id);
+				preparedStatement.setString(2, address);
+				preparedStatement.setString(3, city);
+				preparedStatement.setString(4, state);
+				preparedStatement.setString(5, pin);
+				rowsUpdated = preparedStatement.executeUpdate();
+				if (rowsUpdated != 1) {
+					throw new DBCustomException("Unable to insert address details");
+				}
+			}
+
+			for (String bookID : book_id) {
+				String book = String.format("insert into book_person values('%s','%s')", bookID, id);
+				Statement bookPerson = connection.createStatement();
+				rowsUpdated = bookPerson.executeUpdate(book);
+				if (rowsUpdated != 1) {
+					throw new DBCustomException("Unable to insert book details");
+				}
+			}
+			connection.commit();
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+
+	}
 }
