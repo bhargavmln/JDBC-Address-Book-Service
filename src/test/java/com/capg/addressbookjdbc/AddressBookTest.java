@@ -1,5 +1,6 @@
 package com.capg.addressbookjdbc;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.junit.Assert;
@@ -26,4 +27,11 @@ public class AddressBookTest {
 		Assert.assertTrue(isSynced);
 	}
 
+	//UC18
+    @Ignore
+    @Test
+    public void givenAddressBookDB_WhenRetrievedByDate_ShouldMatchContactCount() throws DBCustomException{
+    	List<Contact> contactListByDate = AddressBookDB.viewAddressBookByDate(LocalDate.of(2019, 01, 01),LocalDate.now());
+    	Assert.assertEquals(3, contactListByDate.size());
+    }
 }

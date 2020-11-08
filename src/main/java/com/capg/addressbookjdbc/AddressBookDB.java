@@ -1,11 +1,13 @@
 package com.capg.addressbookjdbc;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,6 +171,43 @@ public class AddressBookDB {
 			throw new DBCustomException("SQL Exception");
 		}
 		return false;
+	}
+	
+	/**
+	 * UC18
+	 * 
+	 * @return
+	 * @throws DBCustomException
+	 */
+	public static List<Contact> viewAddressBookByDate(LocalDate startDate, LocalDate endDate) throws DBCustomException {
+		List<Contact> contactListByDate = new ArrayList<>();
+		String query = "SELECT id,first_name,last_name,phone,email,address, city, state, pin,start_date"
+				+ " FROM person_details JOIN address_details" + " ON person_details.add_id = address_details.add_id "
+				+ "WHERE `start_date` BETWEEN ? and ?";
+		try (Connection connection = getConnection()) {
+			PreparedStatement statement = connection.prepareStatement(query);
+			statement.setDate(1, Date.valueOf(startDate));
+			statement.setDate(2, Date.valueOf(endDate));
+			ResultSet result = statement.executeQuery();
+			while (result.next()) {
+				int id = result.getInt(1);
+				String first_name = result.getString(2);
+				String last_name = result.getString(3);
+				String phone = result.getString(4);
+				String email = result.getString(5);
+				String address = result.getString(6);
+				String city = result.getString(7);
+				String state = result.getString(8);
+				String pin = result.getString(9);
+				Contact contact = new Contact(id, first_name, last_name, phone, email, address, city, state, pin);
+				System.out.println(contact);
+				contactListByDate.add(contact);
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+			throw new DBCustomException("Failed to retreive contacts within given dates");
+		}
+		return contactListByDate;
 	}
 
 }
