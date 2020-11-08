@@ -9,7 +9,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookDB {
 	public static final String URL = "jdbc:mysql://localhost:3306/address_book_service";
@@ -210,4 +212,27 @@ public class AddressBookDB {
 		return contactListByDate;
 	}
 
+	/**
+	 * UC19
+	 * 
+	 * @param cityOrState
+	 * @return
+	 * @throws DBCustomException
+	 */
+	public static Map<String, Integer> viewCountByCityOrState(String cityOrState) throws DBCustomException {
+		Map<String, Integer> noOfContacts = new HashMap<>();
+		String query = String.format("SELECT %s,COUNT(*) FROM person_details Join address_details "
+				+ "ON person_details.add_id = address_details.add_id GROUP BY %s", cityOrState, cityOrState);
+		try (Connection connection = getConnection()) {
+			Statement statement = connection.createStatement();
+			ResultSet result = statement.executeQuery(query);
+			while (result.next()) {
+				noOfContacts.put(result.getString(1), result.getInt(2));
+				System.out.println(result.getString(1) + "-" + result.getInt(2));
+			}
+		} catch (SQLException e) {
+			throw new DBCustomException("Failed to count contacts grouped by state or city!!");
+		}
+		return noOfContacts;
+	}
 }
