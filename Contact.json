@@ -1,0 +1,59 @@
+{
+  "contacts": [
+    {
+      "id": 1,
+      "first_name": "Bhargav",
+      "last_name": "Mankala",
+      "address": "Home",
+      "city": "hyderabad",
+      "state": "Telangana",
+      "pin": "500011",
+      "phone": "1031031031",
+      "email": "mln@gmail.com"
+    },
+    {
+      "id": 2,
+      "first_name": "Koushik",
+      "last_name": "Mankala",
+      "address": "Home",
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "pin": "501002",
+      "phone": "7597597597",
+      "email": "kmln@gmail.com"
+    },
+    {
+      "id": 3,
+      "first_name": "Sri",
+      "last_name": "Chakra",
+      "address": "Home",
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "pin": "502525",
+      "phone": "4564564564",
+      "email": "sri@gmail.com"
+    },
+    {
+      "id": 4,
+      "first_name": "Sravya",
+      "last_name": "Sruthi",
+      "phone": "2486248624",
+      "email": "ss@gmail.com",
+      "address": "Office",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pin": "152364"
+    },
+    {
+      "id": 5,
+      "first_name": "Abishek",
+      "last_name": "Kumar",
+      "phone": "Office",
+      "email": "Ranchi",
+      "address": "jharkhand",
+      "city": "123123",
+      "state": "159357",
+      "pin": "hulk@gmail.com"
+    }
+  ]
+}
